@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { withFormik, Form, Field, ErrorMessage } from 'formik';
+import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 
@@ -28,8 +28,22 @@ import axios from 'axios';
 //Step 3.
 //Create a handleSubmit axios post request
 
-const UserForm = ({values, touched, errors}) => {
+//Step 4.
+//Display returned data to screen
+//Set up a useState for users, initialize with an empty array
+//Don't forget dependancy array!
 
+const UserForm = ({values, touched, errors, status}) => {
+
+    const [users, setUsers] = useState([]);
+    
+    useEffect(() => {
+        console.log('status has changed', status);
+        status && setUsers(users => [...users, status]);
+    }, [status]);
+    //Watching the status on the dependancy array
+    //Use spread operator for item(users) so the original array isn't overwritten
+    
     return(
         <div className='user-form'>
             <Form>
@@ -76,11 +90,16 @@ const UserForm = ({values, touched, errors}) => {
 
                 <button className='button' type='submit'>Submit</button>
             </Form>
-
-            
+            {users.map(user => (
+                <ul key={user.id}>
+                    <li>Name: {user.name}</li>
+                    <li>Email: {user.email}</li>
+                    
+                </ul>
+            ))}
         </div>
-    )
-}
+    );
+};
 
 const FormikUserForm = withFormik({
     mapPropsToValues({name, email, password, terms}) {
