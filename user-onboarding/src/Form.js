@@ -129,8 +129,9 @@ const FormikUserForm = withFormik({
     }),
 
     //use handleSubmit property to send axios call once submit button is pushed
-    //console.log EVERYTHING
+    //console.log EVERYTHING.
     handleSubmit(values, { setStatus, resetForm }) {
+
         console.log('submitting', values);
         axios
             .post('https://reqres.in/api/users', values)
